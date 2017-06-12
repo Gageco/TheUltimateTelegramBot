@@ -82,6 +82,17 @@ func main() {
 				return err
 			}),
 
+    "help": telebot.CommandFunc(                                               //start
+  		func(ctx context.Context, arg string) error {
+  			api := telebot.GetAPI(ctx)
+  			update := telebot.GetUpdate(ctx)
+  			_, err := api.SendMessage(ctx,
+  				telegram.NewMessagef(update.Chat().ID, helpCommand(arg),
+  				))
+  			return err
+  		}),
+
+
     "rimshot": telebot.CommandFunc(                                              //rimshot
       func(ctx context.Context, arg string) error {
         api := telebot.GetAPI(ctx)
@@ -103,7 +114,7 @@ func main() {
   				return err
   			}),
 
-      "findbabe": telebot.CommandFunc(                                              //findbabe
+      "findbabe": telebot.CommandFunc(                                          //findbabe
         func(ctx context.Context, arg string) error {
           api := telebot.GetAPI(ctx)
           update := telebot.GetUpdate(ctx)
@@ -114,7 +125,7 @@ func main() {
         }),
 
       //Cryptobot Commands
-      "coin": telebot.CommandFunc(                                             //price
+      "coin": telebot.CommandFunc(                                             //coin
     		func(ctx context.Context, arg string) error {
     			api := telebot.GetAPI(ctx)
     			update := telebot.GetUpdate(ctx)
@@ -125,7 +136,7 @@ func main() {
     		}),
 
       //Stockbot Commands
-      "stock": telebot.CommandFunc(                                             //price
+      "stock": telebot.CommandFunc(                                             //stock
         func(ctx context.Context, arg string) error {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
@@ -136,7 +147,7 @@ func main() {
       }),
 
       //Thetimebot Commands
-      "whattimeisit": telebot.CommandFunc(                                             //price
+      "whattimeisit": telebot.CommandFunc(                                      //whattimeisit
     		func(ctx context.Context, arg string) error {
     			api := telebot.GetAPI(ctx)
     			update := telebot.GetUpdate(ctx)

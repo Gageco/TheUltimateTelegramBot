@@ -19,3 +19,16 @@ func rimshotCommand() string {
   fmt.Println("Rimshot command")
   return "https://giphy.com/gifs/c8bJDVz7i9KRW/html5"
 }
+
+func helpCommand(arg string) string {
+  if arg == "stock" {
+    return "/stock [stock symbol]\nExample: /stock goog"
+  } else if arg == "coin" {
+    return "/coin [coin symbol]\nExample: /coin eth"
+  } else if arg == "findbabe" {
+    return "/findbabe [babeid]\nExample: /findbabe asdf35FJLDK10af"
+  } else {
+    return "Babe: /babe\nCryptocoin: /coin eth\nStocks: /stock goog\nThe Time: /whattimeisit\nBabe: /babe\nFind Babe: /findbabe [BabeID]\nRimshot: /rimshot"
+  }
+
+}
