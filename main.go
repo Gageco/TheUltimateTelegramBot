@@ -12,18 +12,11 @@ import (
   "fmt"
   "flag"
   "log"
-  "encoding/json"
-  "net/http"
   "github.com/bot-api/telegram"
   "github.com/bot-api/telegram/telebot"
   "golang.org/x/net/context"
-  "strings"
-  "bytes"
-  "io/ioutil"
   "bufio"
   "os"
-  "strings"
-  "time"
   "github.com/mnzt/tinder"
 )
 
@@ -48,7 +41,7 @@ func main() {
 	debug := flag.Bool("debug", false, "show debug information")
 	flag.Parse()
 	if *token == "" {
-		log.Fatal("token flag is required")\
+		log.Fatal("token flag is required")
 	}
 	api := telegram.New(*token)
 	api.Debug(*debug)
@@ -66,7 +59,7 @@ func main() {
     fmt.Println("Auth failed%s", err.Error())
   }
 
-  userInfo, err := tin.GetUser(tin.Me.user.ID)
+  userInfo, err := tin.GetUser(tin.Me.User.ID)
   if userInfo.Results.Name == "" {
     fmt.Println("Token expired")
   }
@@ -94,7 +87,7 @@ func main() {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
         _, err := api.SendMessage(ctx,
-          telegram.NewMessagef(update.Chat().ID, "https://giphy.com/gifs/c8bJDVz7i9KRW/html5",
+          telegram.NewMessagef(update.Chat().ID, rimshotCommand(),
           ))
         return err
       }),
@@ -161,13 +154,13 @@ func main() {
 				update := telebot.GetUpdate(ctx)
 				//command, arg := update.Message.Command()
 				_, err := api.SendMessage(ctx,
-					telegram.NewMessagef(update.Chat().ID, "Not a recognized command",
+					telegram.NewMessagef(update.Chat().ID, invalidInput(arg),
 					))
 				return err
 			}),
 	}))
 
-	err := bot.Serve(netCtx)
+	err = bot.Serve(netCtx)
 	if err != nil {
 		log.Fatal(err)
 	}

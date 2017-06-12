@@ -1,19 +1,12 @@
 package main
 
 import (
-  "fmt"
-	"flag"
-	"log"
-  "encoding/json"
-  "net/http"
-	"github.com/bot-api/telegram"
-	"github.com/bot-api/telegram/telebot"
-	"golang.org/x/net/context"
-  "strings"
   "bytes"
-  "io/ioutil"
-  "bufio"
-  "os"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+  "strings"
 )
 
 
@@ -26,12 +19,12 @@ type singleCoinInfo struct {
   Change24h  string `json:"percent_change_24h"`
 }
 
-var err error
-var cryptoCoins allCoinInfo
-var response *http.Response
-var body []byte
-
 func getPrice(coin string) string {
+  var err error
+  var cryptoCoins allCoinInfo
+  var response *http.Response
+  var body []byte
+
   response, err = http.Get("https://api.coinmarketcap.com/v1/ticker/")
 	if err != nil {
 		fmt.Println(err)

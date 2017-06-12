@@ -2,15 +2,8 @@ package main
 
 import (
   "fmt"
-  "github.com/bot-api/telegram"
-	"github.com/bot-api/telegram/telebot"
-	"golang.org/x/net/context"
-	"flag"
-	"log"
   "encoding/json"
   "net/http"
-  "os"
-  "bufio"
   "io/ioutil"
   "bytes"
 )

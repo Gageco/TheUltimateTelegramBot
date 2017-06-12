@@ -2,19 +2,10 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strings"
 	"time"
+	"strings"
 	"github.com/mnzt/tinder"
-  "github.com/bot-api/telegram"
-  "github.com/bot-api/telegram/telebot"
-  "golang.org/x/net/context"
-  "flag"
-  "log"
-	"bufio"
-)
-
-
+	)
 
 // myLatitude is the current latitude for you.
 var myLatitude = float32(43.58)
