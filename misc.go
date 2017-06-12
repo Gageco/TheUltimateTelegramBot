@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func startText() string {
   var text string
   fmt.Println("Start Text")
