@@ -103,6 +103,16 @@ func main() {
         return err
       }),
 
+    "abe": telebot.CommandFunc(                                              //rimshot
+      func(ctx context.Context, arg string) error {
+        api := telebot.GetAPI(ctx)
+        update := telebot.GetUpdate(ctx)
+        _, err := api.SendMessage(ctx,
+          telegram.NewMessagef(update.Chat().ID, abeCommand(),
+          ))
+        return err
+      }),
+
       //Tinbot Commands
       "babe": telebot.CommandFunc(                                              //babe
   			func(ctx context.Context, arg string) error {

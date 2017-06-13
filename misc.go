@@ -32,3 +32,8 @@ func helpCommand(arg string) string {
   }
 
 }
+
+func abeCommand() string {
+  fmt.Println("Abe Command")
+  return "http://img.quotery.com/pictures/2013/02/abraham-lincoln.jpg"
+}
