@@ -17,7 +17,7 @@ type singleCoinInfo struct {
   Name       string `json:"name"`
   Symbol     string `json:"symbol"`
   Change24h  string `json:"percent_change_24h"`
-  btcPrice   string `json:"price_btc"`
+  BtcPrice   string `json:"price_btc"`
 }
 
 func getPrice(coin string) string {
@@ -51,13 +51,13 @@ func getPrice(coin string) string {
 
   for i := 0; i < len(cryptoCoins); i++ {
     if strings.ToLower(coin) == strings.ToLower(cryptoCoins[i].Symbol) { //if the symbols are the same ie btc == btc
-      stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].btcPrice+ "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
+      stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
       fmt.Println("Requested Info On: " + cryptoCoins[i].Name)
       return stringToReturn
     }
 
     if strings.ToLower(coin) == strings.ToLower(cryptoCoins[i].Name) { //if the names are the same ie bitcoin == bitcoin
-      stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].btcPrice+ "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
+      stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
       fmt.Println("Requested Info On: " + cryptoCoins[i].Name)
       return stringToReturn
     }
