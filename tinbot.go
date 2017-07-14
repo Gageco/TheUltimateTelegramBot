@@ -66,20 +66,23 @@ func getBabe(tin *tinder.Tinder) string {
   recs, err := tin.GetRecommendations(1)
   if err != nil {
     if strings.Contains(err.Error(), "recs timeout") {
-      return "Not enough babes right now, wait a bit"
+      fmt.Println("Not enough babes right now, wait a bit")
     }
   }
+	if len(recs.Results) < 2 {
+		return "Not enough babes right now, wait a bit"
+	} else {
+	  usr := recs.Results[1]
+	  //userAge, _, _, _, _, _ := diff(usr.Birth, time.Now())
+	  userName := usr.Name
+	  //userBio := usr.Bio
+	  userID := usr.ID
+	  userPhotos := usr.Photos[0].URL
 
-  usr := recs.Results[1]
-  userAge, _, _, _, _, _ := diff(usr.Birth, time.Now())
-  userName := usr.Name
-  //userBio := usr.Bio
-  userID := usr.ID
-  userPhotos := usr.Photos[0].URL
-
-  textToReturn :=  "Name: " + userName + "\nAge: " + string(userAge)+  "\nBabeID: " + userID + "\n" + userPhotos
-  fmt.Println("Displaying info on ",userName)
-  return textToReturn
+	  textToReturn :=  "Name: " + userName + "\nBabeID: " + userID + "\n" + userPhotos
+	  fmt.Println("Displaying info on ",userName)
+	  return textToReturn
+	}
 }
 
 func findBabe(id string, tin *tinder.Tinder) string {
