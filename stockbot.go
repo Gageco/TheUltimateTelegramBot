@@ -44,19 +44,19 @@ func getStockInfo(stock string, apiKey string) string {
 	err = json.Unmarshal(data, &stocks)
 	checkErr(err)
 
-  //parse quandl stock api
-  quandlUrl := "https://www.quandl.com/api/v3/datasets/WIKI/" + stock + "/metadata.json?api_key=" + apiKey
-  response, err = http.Get(quandlUrl)
-  checkErr(err)
-  defer response.Body.Close()
-  body, err = ioutil.ReadAll(response.Body)
-  checkErr(err)
-  data = bytes.TrimSpace(body)
-  data = bytes.TrimPrefix(data, []byte("// "))
-  err = json.Unmarshal(data, &quandl)
-  checkErr(err)
-
   if stocks[0].Exchange != "OTCMKTS" || stocks[0].Exchange != "HKG" {
+    //parse quandl stock api
+    quandlUrl := "https://www.quandl.com/api/v3/datasets/WIKI/" + stock + "/metadata.json?api_key=" + apiKey
+    response, err = http.Get(quandlUrl)
+    checkErr(err)
+    defer response.Body.Close()
+    body, err = ioutil.ReadAll(response.Body)
+    checkErr(err)
+    data = bytes.TrimSpace(body)
+    data = bytes.TrimPrefix(data, []byte("// "))
+    err = json.Unmarshal(data, &quandl)
+    checkErr(err)
+
     stockName := quandl.Dataset.Name[:len(quandl.Dataset.Name)-45]
     stringToReturn = stockName + "\nPrice: " + stocks[0].Price + "\n24hr Change: " + stocks[0].Change + "\nExchange: " + stocks[0].Exchange
     fmt.Println("Info For Stock: " + stockName + " Shown.")
