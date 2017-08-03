@@ -43,9 +43,10 @@ func getStockInfo(stock string, apiKey string) string {
 	data = bytes.TrimPrefix(data, []byte("// "))
 	err = json.Unmarshal(data, &stocks)
 	checkErr(err)
-
-  if stocks[0].Exchange != "OTCMKTS" || stocks[0].Exchange != "HKG" {
+  // fmt.Println(stocks[0].Exchange)
+  if stocks[0].Exchange == "NASDAQ" || stocks[0].Exchange == "NYSE" || stocks[0].Exchange == "NYSEMKT" {
     //parse quandl stock api
+    // fmt.Println("in quald junk")
     quandlUrl := "https://www.quandl.com/api/v3/datasets/WIKI/" + stock + "/metadata.json?api_key=" + apiKey
     response, err = http.Get(quandlUrl)
     checkErr(err)
