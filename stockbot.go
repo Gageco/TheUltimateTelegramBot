@@ -56,7 +56,7 @@ func getStockInfo(stock string, apiKey string) string {
   err = json.Unmarshal(data, &quandl)
   checkErr(err)
 
-  if stocks[0].Exchange != "OTCMKTS" {
+  if stocks[0].Exchange != "OTCMKTS" || stocks[0].Exchange != "HKG" {
     stockName := quandl.Dataset.Name[:len(quandl.Dataset.Name)-45]
     stringToReturn = stockName + "\nPrice: " + stocks[0].Price + "\n24hr Change: " + stocks[0].Change + "\nExchange: " + stocks[0].Exchange
     fmt.Println("Info For Stock: " + stockName + " Shown.")
