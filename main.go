@@ -27,13 +27,16 @@ func main() {
 	scanner.Split(bufio.ScanLines)
   scanner.Scan()
   scanner.Scan()
-  telegramToken := scanner.Text()                                //Line 2
+  telegramToken := scanner.Text()                                               //Line 2
   scanner.Scan()
   scanner.Scan()
   facebookID := scanner.Text()                                                  //Line 4
   scanner.Scan()
   scanner.Scan()
   facebookToken := scanner.Text()                                               //Line 6
+  scanner.Scan()
+  scanner.Scan()
+  quandlAPI := scanner.Text()                                                   //Line 8
   inFile.Close()
 
   //Telegram Authentication
@@ -151,7 +154,7 @@ func main() {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
         _, err := api.SendMessage(ctx,
-          telegram.NewMessagef(update.Chat().ID, getStockInfo(arg),
+          telegram.NewMessagef(update.Chat().ID, getStockInfo(arg, quandlAPI),
           ))
         return err
       }),

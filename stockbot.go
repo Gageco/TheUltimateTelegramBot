@@ -17,41 +17,59 @@ type singleStock struct {
   Ticker   string `json:"t"`
 }
 
-var err error
-var stocks stocksInfo
-var response *http.Response
-var body []byte
+type quandlDataSet struct {
+  Dataset    quandlStock    `json"dataset"`
+}
 
-func getStockInfo(stock string) string {
+type quandlStock struct {
+  Name    string    `json:"name"`
+}
+
+func getStockInfo(stock string, apiKey string) string {
+  var stringToReturn string
+  var err error
+  var stocks stocksInfo
+  var quandl quandlDataSet
+  var response *http.Response
+  var body []byte
+
+  //parse google stocks api
   response, err = http.Get("http://finance.google.com/finance/info?client=ig&q=" + stock)
-
-  if err != nil {
-		fmt.Println(err)
-	}
+  checkErr(err)
   defer response.Body.Close()
-
-  // Read the data into a byte slice
   body, err = ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-  //get rid of whitespace
+	checkErr(err)
   data := bytes.TrimSpace(body)
-
-  // Remove leading slashes and blank space to get byte slice that can be unmarshaled from JSON
 	data = bytes.TrimPrefix(data, []byte("// "))
-
-	// Unmarshal the JSON byte slice to a predefined struct
 	err = json.Unmarshal(data, &stocks)
-	if err != nil {
-		fmt.Println(err)
-	}
+	checkErr(err)
 
-  //ok so straight up i have no idea what this all does but it works. I found it here: https://github.com/tjaensch/stockticker/blob/master/stockticker.go
-  //So thanks to that dude. I apprecate your code, this is going to be helpful in the future
-  stringToReturn := "Stock: " + stocks[0].Ticker + "\nCurrent Price: " + stocks[0].Price + "\n24hr Change: " + stocks[0].Change + "\nExchange: " + stocks[0].Exchange
-  fmt.Println("Info For Stock: " + stocks[0].Ticker + " Shown.")
+  //parse quandl stock api
+  quandlUrl := "https://www.quandl.com/api/v3/datasets/WIKI/" + stock + "/metadata.json?api_key=" + apiKey
+  response, err = http.Get(quandlUrl)
+  checkErr(err)
+  defer response.Body.Close()
+  body, err = ioutil.ReadAll(response.Body)
+  checkErr(err)
+  data = bytes.TrimSpace(body)
+  data = bytes.TrimPrefix(data, []byte("// "))
+  err = json.Unmarshal(data, &quandl)
+  checkErr(err)
+
+  if stocks[0].Exchange != "OTCMKTS" {
+    stockName := quandl.Dataset.Name[:len(quandl.Dataset.Name)-45]
+    stringToReturn = stockName + "\nPrice: " + stocks[0].Price + "\n24hr Change: " + stocks[0].Change + "\nExchange: " + stocks[0].Exchange
+    fmt.Println("Info For Stock: " + stockName + " Shown.")
+  } else {
+    stringToReturn = stocks[0].Ticker + "\nPrice: " + stocks[0].Price + "\n24hr Change: " + stocks[0].Change + "\nExchange: " + stocks[0].Exchange
+    fmt.Println("Info For Stock: " + stocks[0].Ticker + " Shown.")
+  }
 
   return stringToReturn
+}
+
+func checkErr(err error) {
+  if err != nil {
+    fmt.Println(err)
+  }
 }
