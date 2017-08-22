@@ -37,3 +37,8 @@ func abeCommand() string {
   fmt.Println("Abe Command")
   return "http://img.quotery.com/pictures/2013/02/abraham-lincoln.jpg"
 }
+
+func kbntCommand() string {
+  fmt.Println("KBNT Command")
+  return "TO THE MOON!!!! GET THE MONEY!!!! :)!"
+}
