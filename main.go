@@ -100,7 +100,7 @@ func main() {
     			api := telebot.GetAPI(ctx)
     			update := telebot.GetUpdate(ctx)
     			_, err := api.SendMessage(ctx,
-    				telegram.NewMessagef(update.Chat().ID, kbntCommand(arg),
+    				telegram.NewMessagef(update.Chat().ID, kbntCommand(),
     				))
     			return err
     		}),
