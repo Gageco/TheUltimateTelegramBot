@@ -36,7 +36,7 @@ func main() {
   facebookToken := scanner.Text()                                               //Line 6
   scanner.Scan()
   scanner.Scan()
-  quandlAPI := scanner.Text()                                                   //Line 8
+  // quandlAPI := scanner.Text()                                                   //Line 8
   inFile.Close()
 
   //Telegram Authentication
@@ -62,15 +62,15 @@ func main() {
     fmt.Println("Auth failed%s", err.Error())
   }
 
-  userInfo, err := tin.GetUser(tin.Me.User.ID)
-  if userInfo.Results.Name == "" {
-    fmt.Println("Token expired")
-  }
-
-  if err != nil {
-    fmt.Println("Failed to get your user info:%s",err.Error())
-  }
-  fmt.Println("Logged into Facebook")
+  // userInfo, err := tin.GetUser(tin.Me.User.ID)
+  // if userInfo.Results.Name == "" {
+  //   fmt.Println("Token expired")
+  // }
+  //
+  // if err != nil {
+  //   fmt.Println("Failed to get your user info:%s",err.Error())
+  // }
+  // fmt.Println("Logged into Facebook")
 
 	bot.Use(telebot.Commands(map[string]telebot.Commander{
 
@@ -126,15 +126,15 @@ func main() {
       }),
 
       //Tinbot Commands
-      "babe": telebot.CommandFunc(                                              //babe
-  			func(ctx context.Context, arg string) error {
-  				api := telebot.GetAPI(ctx)
-  				update := telebot.GetUpdate(ctx)
-  				_, err := api.SendMessage(ctx,
-  					telegram.NewMessagef(update.Chat().ID, getBabe(tin),
-  					))
-  				return err
-  			}),
+      // "babe": telebot.CommandFunc(                                              //babe
+  		// 	func(ctx context.Context, arg string) error {
+  		// 		api := telebot.GetAPI(ctx)
+  		// 		update := telebot.GetUpdate(ctx)
+  		// 		_, err := api.SendMessage(ctx,
+  		// 			telegram.NewMessagef(update.Chat().ID, getBabe(tin),
+  		// 			))
+  		// 		return err
+  		// 	}),
 
       "findbabe": telebot.CommandFunc(                                          //findbabe
         func(ctx context.Context, arg string) error {
@@ -163,7 +163,7 @@ func main() {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
         _, err := api.SendMessage(ctx,
-          telegram.NewMessagef(update.Chat().ID, getStockInfo(arg, quandlAPI),
+          telegram.NewMessagef(update.Chat().ID, tempStockFunc(arg),
           ))
         return err
       }),

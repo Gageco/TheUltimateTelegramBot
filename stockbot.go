@@ -30,6 +30,10 @@ type quandlError struct {
   Code    string    `json"code"`
 }
 
+func tempStockFunc(arg string) string {
+  return "Sorry stock functionality is not working right now."
+}
+
 func getStockInfo(stock string, apiKey string) string {
   var stringToReturn string
   var err error
@@ -38,7 +42,7 @@ func getStockInfo(stock string, apiKey string) string {
   var response *http.Response
   var body []byte
 
-  //parse google stocks api
+  //parse google stocks api, Sept, 9, 2017: Google Finanace API is dead :( gonna just remove it for now till i find an alternitive.Maybe Yahoo
   response, err = http.Get("http://finance.google.com/finance/info?client=ig&q=" + stock)
   checkErr(err)
   defer response.Body.Close()
@@ -49,7 +53,7 @@ func getStockInfo(stock string, apiKey string) string {
 	err = json.Unmarshal(data, &stocks)
   if err != nil {
     fmt.Println(err)
-    fmt.Println("An error occured on or near like 52, in stockbot.go. The arguement passed was: " + stock)
+    fmt.Println("An error occured on or near line 52, in stockbot.go. The arguement passed was: " + stock)
     return "An error was found. Please retry or contact @gageco"
   }
 
