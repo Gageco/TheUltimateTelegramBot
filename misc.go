@@ -20,6 +20,10 @@ func rimshotCommand() string {
   return "https://giphy.com/gifs/c8bJDVz7i9KRW/html5"
 }
 
+func beeCommand() string {
+  return "https://cdn.modernfarmer.com/wp-content/uploads/2013/06/bee-hero.jpg"
+}
+
 func helpCommand(arg string) string {
   if arg == "stock" {
     return "/stock [stock symbol]\nExample: /stock goog"
