@@ -24,6 +24,10 @@ func beeCommand() string {
   return "https://cdn.modernfarmer.com/wp-content/uploads/2013/06/bee-hero.jpg"
 }
 
+func bee2Command() string {
+  return "https://i.imgur.com/nTBgiJo.jpg"
+}
+
 func helpCommand(arg string) string {
   if arg == "stock" {
     return "/stock [stock symbol]\nExample: /stock goog"
