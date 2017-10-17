@@ -50,3 +50,8 @@ func kbntCommand() string {
   fmt.Println("KBNT Command")
   return "TO THE MOON!!!! GET THE MONEY!!!! :)!"
 }
+
+func getTheTime() string {
+  fmt.Println("Respect Women Command")
+  return "TIME TO RESPECT WOMEN!!!!!"
+}

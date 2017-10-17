@@ -3,10 +3,11 @@ package main
 import (
   "bytes"
 	"encoding/json"
-	"fmt"
+	"log"
 	"io/ioutil"
 	"net/http"
   "strings"
+  "fmt"
 )
 
 
@@ -28,14 +29,16 @@ func getPrice(coin string) string {
 
   response, err = http.Get("https://api.coinmarketcap.com/v1/ticker/")
 	if err != nil {
-		fmt.Println(err)
+    log.Print("cryptobot.go 30: ")
+		log.Println(err)
 	}
 	defer response.Body.Close()
 
 	// Read the data into a byte slice
 	body, err = ioutil.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println(err)
+    log.Print("cryptobot.go 39: ")
+		log.Println(err)
 	}
 	// Remove whitespace from response
 	data := bytes.TrimSpace(body)
@@ -46,7 +49,8 @@ func getPrice(coin string) string {
 	// Unmarshal the JSON byte slice to a predefined struct
 	err = json.Unmarshal(data, &cryptoCoins)
 	if err != nil {
-		fmt.Println(err)
+    log.Print("cryptobot.go 49: ")
+		log.Println(err)
 	}
 
   for i := 0; i < len(cryptoCoins); i++ {

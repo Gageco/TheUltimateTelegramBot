@@ -17,7 +17,6 @@ import (
   "golang.org/x/net/context"
   "bufio"
   "os"
-  "github.com/mnzt/tinder"
 )
 
 func main() {
@@ -30,13 +29,13 @@ func main() {
   telegramToken := scanner.Text()                                               //Line 2
   scanner.Scan()
   scanner.Scan()
-  facebookID := scanner.Text()                                                  //Line 4
+  // facebookID := scanner.Text()                                                  //Line 4
   scanner.Scan()
   scanner.Scan()
-  facebookToken := scanner.Text()                                               //Line 6
+  // facebookToken := scanner.Text()                                               //Line 6
   scanner.Scan()
   scanner.Scan()
-  // quandlAPI := scanner.Text()                                                   //Line 8
+  quandlAPI := scanner.Text()                                                   //Line 8
   inFile.Close()
 
   //Telegram Authentication
@@ -54,23 +53,6 @@ func main() {
 	netCtx, cancel := context.WithCancel(context.Background())
 	defer cancel()
   fmt.Println("Bot has started working.")
-
-  //Facebook Authentication
-  tin := tinder.Init(facebookID, facebookToken)
-  err := tin.Auth()
-  if err != nil {
-    fmt.Println("Auth failed%s", err.Error())
-  }
-
-  // userInfo, err := tin.GetUser(tin.Me.User.ID)
-  // if userInfo.Results.Name == "" {
-  //   fmt.Println("Token expired")
-  // }
-  //
-  // if err != nil {
-  //   fmt.Println("Failed to get your user info:%s",err.Error())
-  // }
-  // fmt.Println("Logged into Facebook")
 
 	bot.Use(telebot.Commands(map[string]telebot.Commander{
 
@@ -146,25 +128,15 @@ func main() {
       }),
 
       //Tinbot Commands
-      // "babe": telebot.CommandFunc(                                              //babe
-  		// 	func(ctx context.Context, arg string) error {
-  		// 		api := telebot.GetAPI(ctx)
-  		// 		update := telebot.GetUpdate(ctx)
-  		// 		_, err := api.SendMessage(ctx,
-  		// 			telegram.NewMessagef(update.Chat().ID, getBabe(tin),
-  		// 			))
-  		// 		return err
-  		// 	}),
-
-      "findbabe": telebot.CommandFunc(                                          //findbabe
-        func(ctx context.Context, arg string) error {
-          api := telebot.GetAPI(ctx)
-          update := telebot.GetUpdate(ctx)
-          _, err := api.SendMessage(ctx,
-            telegram.NewMessagef(update.Chat().ID, findBabe(arg, tin),
-            ))
-          return err
-        }),
+      "babe": telebot.CommandFunc(                                              //babe
+  			func(ctx context.Context, arg string) error {
+  				api := telebot.GetAPI(ctx)
+  				update := telebot.GetUpdate(ctx)
+  				_, err := api.SendMessage(ctx,
+  					telegram.NewMessagef(update.Chat().ID, getBabe(),
+  					))
+  				return err
+  			}),
 
       //Cryptobot Commands
       "coin": telebot.CommandFunc(                                             //coin
@@ -183,7 +155,7 @@ func main() {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
         _, err := api.SendMessage(ctx,
-          telegram.NewMessagef(update.Chat().ID, tempStockFunc(arg),
+          telegram.NewMessagef(update.Chat().ID, tempStockFunc(arg, quandlAPI),
           ))
         return err
       }),
@@ -213,7 +185,7 @@ func main() {
 			}),
 	}))
 
-	err = bot.Serve(netCtx)
+	err := bot.Serve(netCtx)
 	if err != nil {
 		log.Fatal(err)
 	}

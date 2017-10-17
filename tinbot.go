@@ -1,106 +1,67 @@
 package main
 
 import (
+	"log"
+	"math/rand"
+	"io/ioutil"
+	"encoding/json"
+	"net/http"
+	"bytes"
 	"fmt"
-	"time"
-	"strings"
-	"github.com/mnzt/tinder"
-	)
+)
 
-// myLatitude is the current latitude for you.
-var myLatitude = float32(43.58)
+type firstMain []firstData
 
-// myLongitude is the current longitude for you.
-var myLongitude = float32(-116.16)
-
-// diff is used to find user age. It finds the difference between two times.
-func diff(a, b time.Time) (year, month, day, hour, min, sec int) {
-	if a.Location() != b.Location() {
-		b = b.In(a.Location())
-	}
-	if a.After(b) {
-		a, b = b, a
-	}
-	y1, M1, d1 := a.Date()
-	y2, M2, d2 := b.Date()
-
-	h1, m1, s1 := a.Clock()
-	h2, m2, s2 := b.Clock()
-
-	year = int(y2 - y1)
-	month = int(M2 - M1)
-	day = int(d2 - d1)
-	hour = int(h2 - h1)
-	min = int(m2 - m1)
-	sec = int(s2 - s1)
-
-	// Normalize negative values
-	if sec < 0 {
-		sec += 60
-		min--
-	}
-	if min < 0 {
-		min += 60
-		hour--
-	}
-	if hour < 0 {
-		hour += 24
-		day--
-	}
-	if day < 0 {
-		// days in month:
-		t := time.Date(y1, M1, 32, 0, 0, 0, 0, time.UTC)
-		day += 32 - t.Day()
-		month--
-	}
-	if month < 0 {
-		month += 12
-		year--
-	}
-
-	return
+type firstData struct {
+	Data    childrenData    `json:"data"`
 }
 
-func getBabe(tin *tinder.Tinder) string {
+type childrenData []postList
 
-  recs, err := tin.GetRecommendations(1)
-  if err != nil {
-    if strings.Contains(err.Error(), "recs timeout") {
-      fmt.Println("Not enough babes right now, wait a bit")
-    }
-  }
-	if len(recs.Results) < 2 {
-		return "Not enough babes right now, wait a bit"
-	} else {
-	  usr := recs.Results[1]
-	  //userAge, _, _, _, _, _ := diff(usr.Birth, time.Now())
-	  userName := usr.Name
-	  //userBio := usr.Bio
-	  userID := usr.ID
-	  userPhotos := usr.Photos[0].URL
-
-	  textToReturn :=  "Name: " + userName + "\nBabeID: " + userID + "\n" + userPhotos
-	  fmt.Println("Displaying info on ",userName)
-	  return textToReturn
-	}
+type postList struct {
+  Hash    string    `json:"hash"`
+  Title   string    `json:"title"`
 }
 
-func findBabe(id string, tin *tinder.Tinder) string {
-  userInfo, err := tin.GetUser(id)
+func getBabe() string {
+	fmt.Println("Babe Command")
+  var redditLink firstData
+
+  subDomain := [4]string {"shorthairedhotties", "PrettyGirls", "beautifulwomen", "SFWRedheads"}
+  Domain := "http://imgur.com/"
+
+  randNum := rand.Intn(len(subDomain))
+  // randNum = 0
+  // log.Println(randNum)
+  getDomain := Domain + "r/" + subDomain[randNum] + "/new.json"
+
+  response, err := http.Get(getDomain)
   if err != nil {
-    fmt.Println("Error")
+    log.Print("40: ")
+    log.Println(err)
+  }
+  defer response.Body.Close()
+  body, err := ioutil.ReadAll(response.Body)
+  if err != nil {
+    log.Print("46: ")
+    log.Println(err)
+  }
+  data := bytes.TrimSpace(body)
+  data = bytes.TrimPrefix(data, []byte("// "))
+  err = json.Unmarshal(data, &redditLink)
+  if err != nil {
+    log.Print("53: ")
+    log.Println(err)
   }
 
-  usr := userInfo.Results
+	randLink := rand.Intn(50)
 
-  //userAge, _, _, _, _, _ := diff(usr.BirthDate, time.Now())
-  userName := usr.Name
-  //userBio := usr.Bio
-  userID := usr.ID
-  userPhotos := usr.Photos[0].URL
+  linkHash := redditLink.Data[randLink].Hash
+  linkTitle := redditLink.Data[randLink].Title
 
-	textToReturn :=  "Name: " + userName + "\nBabeID: " + userID + "\n" + userPhotos
-  fmt.Println("Finding info ID:",userID, "Name:",userName)
-  return textToReturn
+  finalLink := Domain + linkHash + ".jpg"
+
+	stringToReturn := finalLink + "\n" + linkTitle
+  return stringToReturn
 
 }
