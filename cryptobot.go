@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -22,12 +23,10 @@ type singleCoinInfo struct {
 }
 
 func getPrice(coin string) string {
-  var err error
   var cryptoCoins allCoinInfo
-  var response *http.Response
   var body []byte
 
-  response, err = http.Get("https://api.coinmarketcap.com/v1/ticker/")
+  response, err := http.Get("https://api.coinmarketcap.com/v1/ticker/")
 	if err != nil {
     log.Print("cryptobot.go 30: ")
 		log.Println(err)
@@ -40,7 +39,7 @@ func getPrice(coin string) string {
 	if err != nil {
     log.Print("cryptobot.go 39: ")
 		log.Println(err)
-    return "An error occured, please try again. 40"
+    return "An error occured, please try again. 39"
 	}
 	// Remove whitespace from response
 	data := bytes.TrimSpace(body)
@@ -61,14 +60,13 @@ func getPrice(coin string) string {
       stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
       fmt.Println("Requested Info On: " + cryptoCoins[i].Name)
       return stringToReturn
-    }
-
-    if strings.ToLower(coin) == strings.ToLower(cryptoCoins[i].Name) { //if the names are the same ie bitcoin == bitcoin
+    } else if strings.ToLower(coin) == strings.ToLower(cryptoCoins[i].Name) { //if the names are the same ie bitcoin == bitcoin
       stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
       fmt.Println("Requested Info On: " + cryptoCoins[i].Name)
       return stringToReturn
+    } else {
+      fmt.Println("Requested Info On Invalid Token ", arg)
+        return "Invalid Token"
     }
   }
-  fmt.Println("Requested Info On Invalid Token")
-  return "Invalid Token"
 }
