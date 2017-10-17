@@ -64,9 +64,7 @@ func getPrice(coin string) string {
       stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
       fmt.Println("Requested Info On: " + cryptoCoins[i].Name)
       return stringToReturn
-    } else {
-      fmt.Println("Requested Info On Invalid Token ", arg)
-        return "Invalid Token"
-    }
+    } 
   }
+  return "Invalid Token"
 }
