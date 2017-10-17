@@ -68,12 +68,6 @@ func getStockInfo(stock string, apiKey string) string {
   }   else {
       stringToReturn = "Could not find stock, if you believe this was in error please contact @gageco"
     }
-    //else if len(stocks[0].Ticker) != 0 {
-  //   // fmt.Println("in google stock")
-  //   stringToReturn = stocks[0].Ticker + "\nPrice: " + stocks[0].Price + "\n24hr Change: " + stocks[0].Change + "\nExchange: " + stocks[0].Exchange
-  //   fmt.Println("Info For Stock: " + stocks[0].Ticker + " Shown.")
-  // }
-
 
   return stringToReturn
 }

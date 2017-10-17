@@ -31,6 +31,7 @@ func getPrice(coin string) string {
 	if err != nil {
     log.Print("cryptobot.go 30: ")
 		log.Println(err)
+    return "An error occured, please try again. 30"
 	}
 	defer response.Body.Close()
 
@@ -39,6 +40,7 @@ func getPrice(coin string) string {
 	if err != nil {
     log.Print("cryptobot.go 39: ")
 		log.Println(err)
+    return "An error occured, please try again. 40"
 	}
 	// Remove whitespace from response
 	data := bytes.TrimSpace(body)
@@ -51,6 +53,7 @@ func getPrice(coin string) string {
 	if err != nil {
     log.Print("cryptobot.go 49: ")
 		log.Println(err)
+    return "An error occured, please try again. 49"
 	}
 
   for i := 0; i < len(cryptoCoins); i++ {

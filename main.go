@@ -67,7 +67,7 @@ func main() {
 				return err
 			}),
 
-    "help": telebot.CommandFunc(                                               //start
+    "help": telebot.CommandFunc(                                                //help
   		func(ctx context.Context, arg string) error {
   			api := telebot.GetAPI(ctx)
   			update := telebot.GetUpdate(ctx)
@@ -77,17 +77,17 @@ func main() {
   			return err
   		}),
 
-      "kbnt": telebot.CommandFunc(                                               //start
-    		func(ctx context.Context, arg string) error {
-    			api := telebot.GetAPI(ctx)
-    			update := telebot.GetUpdate(ctx)
-    			_, err := api.SendMessage(ctx,
-    				telegram.NewMessagef(update.Chat().ID, kbntCommand(),
-    				))
-    			return err
-    		}),
+    "kbnt": telebot.CommandFunc(                                                //kbnt
+    	func(ctx context.Context, arg string) error {
+    		api := telebot.GetAPI(ctx)
+    		update := telebot.GetUpdate(ctx)
+    		_, err := api.SendMessage(ctx,
+    			telegram.NewMessagef(update.Chat().ID, kbntCommand(),
+    			))
+    		return err
+    	}),
 
-    "bees": telebot.CommandFunc(                                               //start
+    "bees": telebot.CommandFunc(                                                //bees
       func(ctx context.Context, arg string) error {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
@@ -97,7 +97,7 @@ func main() {
         return err
       }),
 
-    "bees2": telebot.CommandFunc(                                               //start
+    "bees2": telebot.CommandFunc(                                               //bees2
       func(ctx context.Context, arg string) error {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
@@ -107,7 +107,7 @@ func main() {
         return err
       }),
 
-    "rimshot": telebot.CommandFunc(                                              //rimshot
+    "rimshot": telebot.CommandFunc(                                             //rimshot
       func(ctx context.Context, arg string) error {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
@@ -117,7 +117,7 @@ func main() {
         return err
       }),
 
-    "abe": telebot.CommandFunc(                                              //rimshot
+    "abe": telebot.CommandFunc(                                                 //abe
       func(ctx context.Context, arg string) error {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)
@@ -127,50 +127,45 @@ func main() {
         return err
       }),
 
-      //Tinbot Commands
-      "babe": telebot.CommandFunc(                                              //babe
-  			func(ctx context.Context, arg string) error {
-  				api := telebot.GetAPI(ctx)
-  				update := telebot.GetUpdate(ctx)
-  				_, err := api.SendMessage(ctx,
-  					telegram.NewMessagef(update.Chat().ID, getBabe(),
-  					))
-  				return err
-  			}),
-
-      //Cryptobot Commands
-      "coin": telebot.CommandFunc(                                             //coin
-    		func(ctx context.Context, arg string) error {
-    			api := telebot.GetAPI(ctx)
-    			update := telebot.GetUpdate(ctx)
-    			_, err := api.SendMessage(ctx,
-    				telegram.NewMessagef(update.Chat().ID, getPrice(arg),
-    				))
-    			return err
-    		}),
-
-      //Stockbot Commands
-      "stock": telebot.CommandFunc(                                             //stock
-        func(ctx context.Context, arg string) error {
-        api := telebot.GetAPI(ctx)
-        update := telebot.GetUpdate(ctx)
-        _, err := api.SendMessage(ctx,
-          telegram.NewMessagef(update.Chat().ID, tempStockFunc(arg, quandlAPI),
-          ))
-        return err
-      }),
-
-      //Thetimebot Commands
-      "whattimeisit": telebot.CommandFunc(                                      //whattimeisit
-    		func(ctx context.Context, arg string) error {
-    			api := telebot.GetAPI(ctx)
-    			update := telebot.GetUpdate(ctx)
-    			_, err := api.SendMessage(ctx,
-    				telegram.NewMessagef(update.Chat().ID, getTheTime(),
-    			))
+    "babe": telebot.CommandFunc(                                                //babe
+  		func(ctx context.Context, arg string) error {
+  			api := telebot.GetAPI(ctx)
+  			update := telebot.GetUpdate(ctx)
+  			_, err := api.SendMessage(ctx,
+  				telegram.NewMessagef(update.Chat().ID, getBabe(),
+  				))
   			return err
   		}),
 
+    "coin": telebot.CommandFunc(                                                //coin
+    	func(ctx context.Context, arg string) error {
+    		api := telebot.GetAPI(ctx)
+    		update := telebot.GetUpdate(ctx)
+    		_, err := api.SendMessage(ctx,
+    			telegram.NewMessagef(update.Chat().ID, getPrice(arg),
+    			))
+    		return err
+    	}),
+
+    "stock": telebot.CommandFunc(                                               //stock
+      func(ctx context.Context, arg string) error {
+      api := telebot.GetAPI(ctx)
+      update := telebot.GetUpdate(ctx)
+      _, err := api.SendMessage(ctx,
+        telegram.NewMessagef(update.Chat().ID, tempStockFunc(arg, quandlAPI),
+        ))
+      return err
+    }),
+
+    "whattimeisit": telebot.CommandFunc(                                        //whattimeisit
+    	func(ctx context.Context, arg string) error {
+    		api := telebot.GetAPI(ctx)
+    		update := telebot.GetUpdate(ctx)
+    		_, err := api.SendMessage(ctx,
+    			telegram.NewMessagef(update.Chat().ID, getTheTime(),
+    		))
+  		return err
+  	}),
 
 		"": telebot.CommandFunc(                                                    //not valid
 			func(ctx context.Context, arg string) error {
