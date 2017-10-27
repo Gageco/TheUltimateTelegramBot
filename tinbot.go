@@ -1,14 +1,15 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"math/rand"
 	"io/ioutil"
 	"encoding/json"
 	"net/http"
 	"bytes"
-	"fmt"
 )
+
+// var Blacklist[50]string
 
 type firstMain []firstData
 
@@ -23,45 +24,78 @@ type postList struct {
   Title   string    `json:"title"`
 }
 
+func babeRetry(babe string) string {
+	fmt.Println("babeRetrying")
+	if babe == "gbabe" {
+		return getBabe()
+	}
+	//  else if babe == "fbabe" {
+	// 	return getFemaleBabe()
+	// } else if babe == "mbabe" {
+	// 	return getMaleBabe()
+	// }
+	return getBabe()
+}
+
 func getBabe() string {
-	fmt.Println("Babe Command")
+	subDomain := [7]string {"shorthairedhotties", "PrettyGirls", "beautifulwomen", "SFWRedheads", "gentlemanboners", "sexysfw", "ladyboners"}
+	Domain := "http://imgur.com/"
+
+	randNum := rand.Intn(len(subDomain))
+	getDomain := Domain + "r/" + subDomain[randNum] + "/new.json"
+
+	return getPicture(getDomain, Domain, "gbabe")
+}
+
+func getPicture(getDomain string, Domain string, babeType string) string {
   var redditLink firstData
-
-  subDomain := [4]string {"shorthairedhotties", "PrettyGirls", "beautifulwomen", "SFWRedheads"}
-  Domain := "http://imgur.com/"
-
-  randNum := rand.Intn(len(subDomain))
-  // randNum = 0
-  // log.Println(randNum)
-  getDomain := Domain + "r/" + subDomain[randNum] + "/new.json"
 
   response, err := http.Get(getDomain)
   if err != nil {
-    log.Print("40: ")
-    log.Println(err)
+    fmt.Print("76: ",babeType)
+    fmt.Println(err)
+    return babeRetry(babeType)
   }
   defer response.Body.Close()
   body, err := ioutil.ReadAll(response.Body)
   if err != nil {
-    log.Print("46: ")
-    log.Println(err)
+    fmt.Print("83: ",babeType)
+    fmt.Println(err)
+    return babeRetry(babeType)
   }
   data := bytes.TrimSpace(body)
   data = bytes.TrimPrefix(data, []byte("// "))
   err = json.Unmarshal(data, &redditLink)
   if err != nil {
-    log.Print("53: ")
-    log.Println(err)
+    fmt.Print("91: ",babeType)
+    fmt.Println(err)
+    return babeRetry(babeType)
   }
 
-	randLink := rand.Intn(50)
-
+  randLink := rand.Intn(len(redditLink.Data))
   linkHash := redditLink.Data[randLink].Hash
   linkTitle := redditLink.Data[randLink].Title
-
   finalLink := Domain + linkHash + ".jpg"
 
-	stringToReturn := finalLink + "\n" + linkTitle
-  return stringToReturn
+  // matchFound := false
 
+  // for i:=0; i < len(Blacklist); i++ {
+  //   time.Sleep(time.Millisecond * 1)
+  //   // fmt.Println(linkHash)
+  //   // fmt.Println(Blacklist[i])
+  //   if linkHash == Blacklist[i] {
+  //     matchFound = true
+  //     // fmt.Println(matchFound)
+  //     break
+  //   } else if Blacklist[i] == "" {
+  //     break
+  //   }
+  //   // fmt.Println(matchFound, i)
+  // }
+	//
+  // if matchFound {
+  //   return babeRetry(babeType)
+  // }
+  fmt.Println("Babe: ", linkHash)
+  return finalLink + "\nTitle: " + linkTitle + "\nID: " + linkHash
 }
