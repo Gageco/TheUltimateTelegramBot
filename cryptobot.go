@@ -30,7 +30,7 @@ func getPrice(coin string) string {
 	if err != nil {
     log.Print("cryptobot.go 30: ")
 		log.Println(err)
-    return "An error occured, please try again. 30"
+    return retry("crypto", coin)
 	}
 	defer response.Body.Close()
 
@@ -39,7 +39,7 @@ func getPrice(coin string) string {
 	if err != nil {
     log.Print("cryptobot.go 39: ")
 		log.Println(err)
-    return "An error occured, please try again. 39"
+    return retry("crypto", coin)
 	}
 	// Remove whitespace from response
 	data := bytes.TrimSpace(body)
@@ -52,7 +52,7 @@ func getPrice(coin string) string {
 	if err != nil {
     log.Print("cryptobot.go 49: ")
 		log.Println(err)
-    return "An error occured, please try again. 49"
+    return retry("crypto", coin)
 	}
 
   for i := 0; i < len(cryptoCoins); i++ {
@@ -64,7 +64,7 @@ func getPrice(coin string) string {
       stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
       fmt.Println("Requested Info On: " + cryptoCoins[i].Name)
       return stringToReturn
-    } 
+    }
   }
   return "Invalid Token"
 }

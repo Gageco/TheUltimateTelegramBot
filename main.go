@@ -127,7 +127,7 @@ func main() {
         return err
       }),
 
-    "babe": telebot.CommandFunc(                                                //babe
+    "babe": telebot.CommandFunc( //NEEDSRETRY                                                //babe
   		func(ctx context.Context, arg string) error {
   			api := telebot.GetAPI(ctx)
   			update := telebot.GetUpdate(ctx)
@@ -137,7 +137,7 @@ func main() {
   			return err
   		}),
 
-    "coin": telebot.CommandFunc(                                                //coin
+    "coin": telebot.CommandFunc(//NEEDSRETRY                                                //coin
     	func(ctx context.Context, arg string) error {
     		api := telebot.GetAPI(ctx)
     		update := telebot.GetUpdate(ctx)
