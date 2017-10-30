@@ -11,15 +11,10 @@ var previousFunc string
 
 func retry(recentFunc string, passedArg string) string {
   fmt.Println("Retrying")
-  if previousFunc != recentFunc {
-    numberOfRetrys = 0
-  } else if recentFunc == "crypto" {
+  if recentFunc == "crypto" {
     numberOfRetrys += 1
-    if numberOfRetrys <= 5 {
-      return getPrice(passedArg)
-    }
-    numberOfRetrys = 0
-    return "Something went wrong with crypto functions"
+    fmt.Println(numberOfRetrys)
+    return getPrice(passedArg)
   }
 
   return "Invalid argument passed: " + recentFunc
