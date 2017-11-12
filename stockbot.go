@@ -13,7 +13,7 @@ import (
 var stockInterface interface{}
 
 func getCurrentDate() string {
-  CurrentDate := time.Now()
+  CurrentDate := time.Now().UTC()
   newDate := CurrentDate
 
   if CurrentDate.Weekday() == 0 {
