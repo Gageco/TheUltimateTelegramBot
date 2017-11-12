@@ -6,75 +6,88 @@ import (
   "net/http"
   "io/ioutil"
   "bytes"
-  "log"
+  "time"
+  "strings"
 )
 
-type stocksInfo []singleStock
+var stockInterface interface{}
 
-type singleStock struct {
-	Price    string `json:"l"`
-	Change   string `json:"c"`
-  Exchange string `json:"e"`
-  Ticker   string `json:"t"`
-}
+func getCurrentDate() string {
+  CurrentDate := time.Now()
+  newDate := CurrentDate
 
-type quandlDataSet struct {
-  Dataset    quandlStock    `json"dataset"`
-  Error      quandlError    `json"quandl_error"`
-}
-
-type quandlStock struct {
-  Name    string    `json:"name"`
-}
-
-type quandlError struct {
-  Code    string    `json"code"`
+  if CurrentDate.Weekday() == 0 {
+    newDate = CurrentDate.AddDate(0, 0, -2)
+  } else if CurrentDate.Weekday() == 6 {
+    newDate = CurrentDate.AddDate(0, 0, -1)
+  }
+  ReturnedString := newDate.Format("2006-01-02")
+  return ReturnedString
 }
 
 func tempStockFunc(arg string, api string) string {
   fmt.Println(api)
+  getCurrentDate()
   return "Sorry stock functionality is not working right now."
 }
 
 func getStockInfo(stock string, apiKey string) string {
+  fmt.Println("Stock Function: " + stock)
   var stringToReturn string
-  var err error
-  var stocks stocksInfo
-  var quandl quandlDataSet
-  var response *http.Response
-  var body []byte
+  dateFound := false
 
-  //parse quandl api
-  quandlUrl := "https://www.quandl.com/api/v3/datasets/WIKI/" + stock + "/metadata.json?api_key=" + apiKey
-  response, err = http.Get(quandlUrl)
-  checkErr(err)
-  defer response.Body.Close()
-  body, err = ioutil.ReadAll(response.Body)
-  checkErr(err)
-  data := bytes.TrimSpace(body)
-  data = bytes.TrimPrefix(data, []byte("// "))
-  err = json.Unmarshal(data, &quandl)
+  ApiURL := "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + stock + "&apikey=" + apiKey
+
+  //parse api response
+  response, err := http.Get(ApiURL)
   if err != nil {
-    log.Print("stockbot.go 70: ")
-    log.Println(err)
+    fmt.Print("stockbot.go 49: ")
+    fmt.Println(err)
     return "An error was found. Please retry or contact @gageco"
   }
-  fmt.Println(quandl.Dataset.Name)
-  if len(quandl.Dataset.Name) != 0 {
-    stockName := quandl.Dataset.Name[:len(quandl.Dataset.Name)-45]
-    fmt.Println("LOOOK HERE")
-    stringToReturn = stockName + "\nPrice: " + stocks[0].Price + "\n24hr Change: " + stocks[0].Change + "\nExchange: " + stocks[0].Exchange
-    fmt.Println("Info For Stock: " + stockName + " Shown.")
-  }   else {
-      stringToReturn = "Could not find stock, if you believe this was in error please contact @gageco"
+  defer response.Body.Close()
+  body, err := ioutil.ReadAll(response.Body)
+  if err != nil {
+    fmt.Print("stockbot.go 52: ")
+    fmt.Println(err)
+    return "An error was found. Please retry or contact @gageco"
+  }
+
+  data := bytes.TrimSpace(body)
+  data = bytes.TrimPrefix(data, []byte("// "))
+  err = json.Unmarshal(data, &stockInterface)
+  if err != nil {
+    fmt.Print("stockbot.go 70: ")
+    fmt.Println(err)
+    return "An error was found. Please retry or contact @gageco"
+  }
+
+  inStockInterface := stockInterface.(map[string]interface{})
+  for possibleError, inMap00 := range inStockInterface {
+
+    if possibleError == "Error Message" {
+      stringToReturn = "Stock Not Found"
+      break
     }
+    inMap01 := inMap00.(map[string]interface{})
+    for mapDate, mapDateStock  := range inMap01 {
+      if mapDate == getCurrentDate() {
+        mapDateStockData := mapDateStock.(map[string]interface{})
+        // openStock := mapDateStockData["1. open"]
+        highStock := mapDateStockData["2. high"]
+        lowStock := mapDateStockData["3. low"]
+        closeStock := mapDateStockData["4. close"]
+        // volumeStock := mapDateStockData["5. volume"]
+
+        pullLength := len(closeStock.(string))-2
+        stringToReturn = "Stock $" + strings.ToUpper(stock) + "\nPrice: " + closeStock.(string)[:pullLength] + "\nHigh: " + highStock.(string)[:pullLength] + "\nLow: " + lowStock.(string)[:pullLength]
+        dateFound = true
+      }
+    }
+    if dateFound == false{
+      stringToReturn = "Date Not Found"
+    }
+  }
 
   return stringToReturn
-}
-
-func checkErr(err error) {
-  if err != nil {
-    log.Print("stockbot.go")
-    log.Println(err)
-  }
 }
