@@ -56,11 +56,11 @@ func getPrice(coin string) string {
 
   for i := 0; i < len(cryptoCoins); i++ {
     if strings.ToLower(coin) == strings.ToLower(cryptoCoins[i].Symbol) { //if the symbols are the same ie btc == btc
-      stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
+      stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%%")
       fmt.Println("Requested Info On: " + cryptoCoins[i].Name)
       return stringToReturn
     } else if strings.ToLower(coin) == strings.ToLower(cryptoCoins[i].Name) { //if the names are the same ie bitcoin == bitcoin
-      stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%")
+      stringToReturn := (cryptoCoins[i].Name + ": " + cryptoCoins[i].Symbol + "\nPrice USD: " + cryptoCoins[i].Price  + "\nPrice BTC: " + cryptoCoins[i].BtcPrice + "\n24hr Change: " + cryptoCoins[i].Change24h + "%%")
       fmt.Println("Requested Info On: " + cryptoCoins[i].Name)
       return stringToReturn
     }

@@ -8,6 +8,7 @@ import (
   "bytes"
   "time"
   "strings"
+  "strconv"
 )
 
 var stockInterface interface{}
@@ -73,14 +74,25 @@ func getStockInfo(stock string, apiKey string) string {
     for mapDate, mapDateStock  := range inMap01 {
       if mapDate == getCurrentDate() {
         mapDateStockData := mapDateStock.(map[string]interface{})
-        // openStock := mapDateStockData["1. open"]
-        highStock := mapDateStockData["2. high"]
-        lowStock := mapDateStockData["3. low"]
+        openStock := mapDateStockData["1. open"]
+        // highStock := mapDateStockData["2. high"]
+        // lowStock := mapDateStockData["3. low"]
         closeStock := mapDateStockData["4. close"]
-        // volumeStock := mapDateStockData["5. volume"]
 
         pullLength := len(closeStock.(string))-2
-        stringToReturn = "Stock $" + strings.ToUpper(stock) + "\nPrice: " + closeStock.(string)[:pullLength] + "\nHigh: " + highStock.(string)[:pullLength] + "\nLow: " + lowStock.(string)[:pullLength]
+
+        intOpenStock, err := strconv.Atoi(openStock.(string)[:pullLength-3])
+        if err != nil {
+          fmt.Println(err)
+        }
+        intCloseStock, err := strconv.Atoi(closeStock.(string)[:pullLength-3])
+        if err != nil {
+          fmt.Println(err)
+        }
+
+        changeStock := (float64(intCloseStock) - float64(intOpenStock))/float64(intOpenStock) * 100
+
+        stringToReturn = "Stock $" + strings.ToUpper(stock) + "\nPrice: " + closeStock.(string)[:pullLength] + "\nOpen: " + openStock.(string)[:pullLength] + "\nChange: " + strconv.FormatFloat(changeStock, 'f', 2, 64) + "%%"
         dateFound = true
       }
     }
