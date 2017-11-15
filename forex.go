@@ -52,7 +52,7 @@ func getForex(forex string) string {
         for baseInter, dataInter := range dataInterf {
           if baseInter == strings.ToUpper(forexArr[1]) {
             // fmt.Println(forexArr[1], dataInter)
-            stringToReturn = strings.ToUpper(forexArr[0]) + "/" + strings.ToUpper(forexArr[1]) + ": " +  strconv.FormatFloat(dataInter.(float64), 'E', -1, 64)[:6]
+            stringToReturn = strings.ToUpper(forexArr[0]) + "/" + strings.ToUpper(forexArr[1]) + ": " +  strconv.FormatFloat(dataInter.(float64), 'E', -1, 64)
           }
         }
       }
