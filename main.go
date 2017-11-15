@@ -161,6 +161,16 @@ func main() {
   		return err
   	}),
 
+    "forex": telebot.CommandFunc(                                        //whattimeisit
+      func(ctx context.Context, arg string) error {
+        api := telebot.GetAPI(ctx)
+        update := telebot.GetUpdate(ctx)
+        _, err := api.SendMessage(ctx,
+          telegram.NewMessagef(update.Chat().ID, getForex(arg),
+        ))
+      return err
+    }),
+
 		"": telebot.CommandFunc(                                                    //not valid
 			func(ctx context.Context, arg string) error {
 

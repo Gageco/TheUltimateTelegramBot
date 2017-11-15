@@ -17,6 +17,8 @@ func retry(recentFunc string, passedArg string, passedArg1 string) string {
     return getPrice(passedArg)
   } else if recentFunc == "stock" {
     return getStockInfo(passedArg, passedArg1)
+  } else if recentFunc == "forex" {
+    return getForex(passedArg)
   }
 
   return "Invalid argument passed: " + recentFunc
