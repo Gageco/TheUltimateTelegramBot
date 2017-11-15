@@ -42,25 +42,25 @@ func getStockInfo(stock string, apiKey string) string {
   //parse api response
   response, err := http.Get(ApiURL)
   if err != nil {
-    fmt.Print("stockbot.go 49: ")
+    fmt.Print("stockbot.go 45: ")
     fmt.Println(err)
-    return "An error was found. Please retry or contact @gageco"
+    return retry("stock", stock, apiKey)
   }
   defer response.Body.Close()
   body, err := ioutil.ReadAll(response.Body)
   if err != nil {
     fmt.Print("stockbot.go 52: ")
     fmt.Println(err)
-    return "An error was found. Please retry or contact @gageco"
+    return retry("stock", stock, apiKey)
   }
 
   data := bytes.TrimSpace(body)
   data = bytes.TrimPrefix(data, []byte("// "))
   err = json.Unmarshal(data, &stockInterface)
   if err != nil {
-    fmt.Print("stockbot.go 70: ")
+    fmt.Print("stockbot.go 61: ")
     fmt.Println(err)
-    return "An error was found. Please retry or contact @gageco"
+    return retry("stock", stock, apiKey)
   }
 
   inStockInterface := stockInterface.(map[string]interface{})

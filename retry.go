@@ -9,12 +9,14 @@ var previousFunc string
 //   numberOfRetrys = 0
 // }
 
-func retry(recentFunc string, passedArg string) string {
-  fmt.Println("Retrying")
+func retry(recentFunc string, passedArg string, passedArg1 string) string {
+  numberOfRetrys += 1
+
+  fmt.Println("Retrying: ", recentFunc)
   if recentFunc == "crypto" {
-    numberOfRetrys += 1
-    fmt.Println(numberOfRetrys)
     return getPrice(passedArg)
+  } else if recentFunc == "stock" {
+    return getStockInfo(passedArg, passedArg1)
   }
 
   return "Invalid argument passed: " + recentFunc
