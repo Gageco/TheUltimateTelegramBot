@@ -8,8 +8,10 @@ import (
 	"io/ioutil"
 	"net/http"
   "strings"
+  "strconv"
 )
 
+var timesSearchedJSON int
 
 type allCoinInfo []singleCoinInfo
 
@@ -25,11 +27,11 @@ func getPrice(coin string) string {
   var cryptoCoins allCoinInfo
   var body []byte
 
-  response, err := http.Get("https://api.coinmarketcap.com/v1/ticker/")
+  response, err := http.Get("https://api.coinmarketcap.com/v1/ticker/?start=" + strconv.Itoa(timesSearchedJSON*100))
 	if err != nil {
     fmt.Print("cryptobot.go 30: ")
 		fmt.Println(err)
-    return retry("crypto", coin)
+    return retry("crypto", coin, "")
 	}
 	defer response.Body.Close()
 
@@ -38,7 +40,7 @@ func getPrice(coin string) string {
 	if err != nil {
     fmt.Print("cryptobot.go 39: ")
 		fmt.Println(err)
-    return retry("crypto", coin)
+    return retry("crypto", coin, "")
 	}
 	// Remove whitespace from response
 	data := bytes.TrimSpace(body)
@@ -51,7 +53,7 @@ func getPrice(coin string) string {
 	if err != nil {
     fmt.Print("cryptobot.go 49: ")
 		fmt.Println(err)
-    return retry("crypto", coin)
+    return retry("crypto", coin, "")
 	}
 
   for i := 0; i < len(cryptoCoins); i++ {
@@ -65,5 +67,13 @@ func getPrice(coin string) string {
       return stringToReturn
     }
   }
-  return "Invalid Token"
+  timesSearchedJSON += 1;
+  if timesSearchedJSON > 12 {
+    timesSearchedJSON = 0
+    return "Token Not Found"
+  } else {
+    return retry("crypto", coin, "")
+  }
+  return "Token Not Found 144"
+
 }
