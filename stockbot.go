@@ -15,8 +15,8 @@ var stockInterface interface{}
 
 func getCurrentDate() string {
   CurrentDate := time.Now().UTC()
-  newDate := CurrentDate
-
+  newDate := CurrentDate.Add(-5 * time.Hour)
+  
   if CurrentDate.Weekday() == 0 {
     newDate = CurrentDate.AddDate(0, 0, -2)
   } else if CurrentDate.Weekday() == 6 {
