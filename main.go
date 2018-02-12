@@ -121,6 +121,16 @@ func main() {
         return err
       }),
 
+    "update": telebot.CommandFunc(                                                 //abe
+      func(ctx context.Context, arg string) error {
+        api := telebot.GetAPI(ctx)
+        update := telebot.GetUpdate(ctx)
+        _, err := api.SendMessage(ctx,
+          telegram.NewMessagef(update.Chat().ID, update(),
+          ))
+        return err
+      }),
+
     "babe": telebot.CommandFunc( //NEEDSRETRY                                                //babe
   		func(ctx context.Context, arg string) error {
   			api := telebot.GetAPI(ctx)

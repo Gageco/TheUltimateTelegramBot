@@ -28,6 +28,10 @@ func bee2Command() string {
   return "https://i.imgur.com/nTBgiJo.jpg"
 }
 
+func update() string {
+  return "Latest Update:\nAdded Ethereum price to coin prices"
+}
+
 func helpCommand(arg string) string {
   if arg == "stock" {
     return "/stock [stock symbol]\nExample: /stock goog"
