@@ -62,11 +62,13 @@ func getTheTime() string {
 }
 
 func bcic1Amount(currentAmount string) string {
-  initAmount := 35545.00
+  initAmount := 35545.00*.95
   currentAmountFloat, err := strconv.ParseFloat(currentAmount, 64)
   if err != nil {
     return "Error, please dont use commas"
   }
+
+  currentAmountFloat = currentAmountFloat*.8
   percent := (currentAmountFloat - initAmount)/initAmount
   percentString := strconv.FormatFloat(percent, 'f', 6, 64)[:5]
   // fmt.Println(percentString)
