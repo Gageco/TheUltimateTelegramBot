@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "strconv"
 
 func startText() string {
   var text string
@@ -58,4 +59,17 @@ func kbntCommand() string {
 func getTheTime() string {
   fmt.Println("Respect Women Command")
   return "TIME TO RESPECT WOMEN!!!!!"
+}
+
+func bcic1Amount(currentAmount string) string {
+  initAmount := 35545.00
+  currentAmountFloat, err := strconv.ParseFloat(currentAmount, 64)
+  if err != nil {
+    return "Error, please dont use commas"
+  }
+  percent := (currentAmountFloat - initAmount)/initAmount
+  percentString := strconv.FormatFloat(percent, 'f', 6, 64)[:5]
+  // fmt.Println(percentString)
+  return percentString + "x"
+
 }

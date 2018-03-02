@@ -29,7 +29,7 @@ func main() {
   telegramToken := scanner.Text()                                               //Line 2                                               //Line 6
   scanner.Scan()
   scanner.Scan()
-  stockAPI := scanner.Text()                                                   //Line 8
+  stockAPI := scanner.Text()                                                    //Line 8
   inFile.Close()
 
   //Telegram Authentication
@@ -71,12 +71,12 @@ func main() {
   			return err
   		}),
 
-    "kbnt": telebot.CommandFunc(                                                //kbnt
+    "amount": telebot.CommandFunc(                                                //kbnt
     	func(ctx context.Context, arg string) error {
     		api := telebot.GetAPI(ctx)
     		update := telebot.GetUpdate(ctx)
     		_, err := api.SendMessage(ctx,
-    			telegram.NewMessagef(update.Chat().ID, kbntCommand(),
+    			telegram.NewMessagef(update.Chat().ID, bcic1Amount(arg),
     			))
     		return err
     	}),
@@ -131,7 +131,7 @@ func main() {
   			return err
   		}),
 
-    "coin": telebot.CommandFunc(//NEEDSRETRY                                                //coin
+    "coin": telebot.CommandFunc(                                                //coin
     	func(ctx context.Context, arg string) error {
     		api := telebot.GetAPI(ctx)
     		update := telebot.GetUpdate(ctx)
@@ -161,7 +161,7 @@ func main() {
   		return err
   	}),
 
-    "forex": telebot.CommandFunc(                                        //whattimeisit
+    "forex": telebot.CommandFunc(                                               //forex
       func(ctx context.Context, arg string) error {
         api := telebot.GetAPI(ctx)
         update := telebot.GetUpdate(ctx)

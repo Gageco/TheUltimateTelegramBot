@@ -104,13 +104,8 @@ func getPriceEthereum() float64 {
     fmt.Println(err)
     // return retry("crypto", coin, "")
   }
-  // Remove whitespace from response
   data := bytes.TrimSpace(body)
-
-  // Remove leading slashes and blank space to get byte slice that can be unmarshaled from JSON
   data = bytes.TrimPrefix(data, []byte("// "))
-
-  // Unmarshal the JSON byte slice to a predefined struct
   err = json.Unmarshal(data, &ethInfo)
   if err != nil {
     fmt.Print("cryptobot.go 122: ")
@@ -127,7 +122,5 @@ func getPriceEthereum() float64 {
 }
 
 func FloatToString(input_num float64) string {
-
-	// to convert a float number to a string
 	return strconv.FormatFloat(input_num, 'f', 6, 64)
 }
